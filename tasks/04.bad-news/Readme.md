@@ -57,11 +57,11 @@ services.AddControllersWithViews();
 app.UseRouting();
 app.UseEndpoints(endpoints =>
 {
-	endpoints.MapControllerRoute("status-code", "StatusCode/{code?}", new
-	{
-		controller = "Errors",
-		action = "StatusCode"
-	});
+    endpoints.MapControllerRoute("status-code", "StatusCode/{code?}", new
+    {
+        controller = "Errors",
+        action = "StatusCode"
+    });
 });
 ```
 Они подключают обработку путей с помощью MVC и конкретно в данной конфигурации написано очень четко,
@@ -180,7 +180,7 @@ else
 ConfigureWebHostDefaults(webBuilder =>
 {
     webBuilder.UseStartup<Startup>();
-	webBuilder.UseEnvironment(Microsoft.Extensions.Hosting.Environments.Development);
+    webBuilder.UseEnvironment(Microsoft.Extensions.Hosting.Environments.Development);
 })
 ```
 
@@ -225,8 +225,8 @@ Serilog может генерировать сообщения в обычном
 public static IHostBuilder CreateHostBuilder(string[] args)
 {
     return Host.CreateDefaultBuilder(args)
-	    .ConfigureWebHostDefaults(webBuilder =>
-	    {
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
             ...
         })
         .UseSerilog((hostingContext, loggerConfiguration) =>
@@ -257,8 +257,8 @@ Serilog можно конфигурировать через код, но зде
           "outputTemplate": "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}"
         }
       }
-	],
-	"MinimumLevel": {
+    ],
+    "MinimumLevel": {
       "Default": "Information",
       "Override": {
         "Microsoft": "Warning",
@@ -277,6 +277,10 @@ Serilog можно конфигурировать через код, но зде
 
 5. Перейди по пути `/news/fullarticle/123`, чтобы получить исключение.
 Убедись, что оно было залогировано в файле `/.logs/log-{current-date}` в виде JSON.
+
+*Замечание. На момент 2020.03.27 использование UseSerilog ломает логику автоматического запуска браузера в VS Code*
+*и, возможно, в других IDE, потому что эта логика ориентируется на формат сообщений из логов:*
+*[Подробнее в этом и связанных issue](https://github.com/serilog/serilog/issues/1408).*
 
 
 Кроме ошибок полезно логировать вообще все запросы. Как минимум, это помогает понять последовательноть
@@ -585,7 +589,7 @@ if (model == null)
 @using System.Globalization
 @{
     ViewBag.Culture = CultureInfo.CreateSpecificCulture("ru-ru");
-	Layout = "_Layout";
+    Layout = "_Layout";
 }
 ```
 
@@ -678,6 +682,9 @@ if (model == null)
 Далее сделай это для ссылок «Новее» и «Старше», т.е. вместо `href` пропиши следующие атрибуты:
 - `asp-controller` с именем контроллера, но без суффикса `Controller`
 - `asp-route-pageIndex` с индексом страницы
+
+*Подсказка: если хочется, чтобы Razor вычислил выражение и напечатал результат надо*
+*использовать круглые скобки после `@`: `@(value + 5)`*
 
 А, чтобы пользователь не кликал лишний раз, когда уже находится на первой или последней странице,
 при условии `Model.IsFirst` показывай заблокированную версию ссылки «Новее»,
