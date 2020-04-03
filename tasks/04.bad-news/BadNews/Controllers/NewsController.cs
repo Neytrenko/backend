@@ -13,14 +13,15 @@ namespace BadNews
         {
             this.newsModelBuilder = newsModelBuilder;
         }
-      
-        public IActionResult Index(int pageIndex = 0)
+
+        public IActionResult Index(int? year, int pageIndex = 0)
         {
-            var model = newsModelBuilder.BuildIndexModel(pageIndex, false, null);
-            return View(model);
+            return View(year == null ?
+            newsModelBuilder.BuildIndexModel(pageIndex, true, year) :
+            newsModelBuilder.BuildIndexModel(pageIndex, false, year));
         }
 
-        public IActionResult Index1(Guid id)
+        public IActionResult FullArticle(Guid id)
         {
             var model = newsModelBuilder.BuildFullArticleModel(id);
             if (model == null)

@@ -1,9 +1,11 @@
 ﻿using BadNews.ModelBuilders.News;
 using BadNews.Models.News;
 using BadNews.Repositories.News;
+using BadNews.Validaton;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,6 +37,7 @@ namespace BadNews
         {
             services.AddSingleton<INewsRepository, NewsRepository>();
             services.AddSingleton<INewsModelBuilder, NewsModelBuilder>();
+            services.AddSingleton<IValidationAttributeAdapterProvider, StopWordsAttributeAdapterProvider>();
             var mvc = services.AddControllersWithViews();
             if (env.IsDevelopment())
                 mvc.AddRazorRuntimeCompilation();
